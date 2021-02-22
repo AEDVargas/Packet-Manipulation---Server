@@ -1,0 +1,7 @@
+D:\Backup Work\Current Work\Skeleton\NLT - Manipulation\Server\Server\bin\Debug\Server.exe.config
+D:\Backup Work\Current Work\Skeleton\NLT - Manipulation\Server\Server\bin\Debug\Server.exe
+D:\Backup Work\Current Work\Skeleton\NLT - Manipulation\Server\Server\bin\Debug\Server.pdb
+D:\Backup Work\Current Work\Skeleton\NLT - Manipulation\Server\Server\obj\Debug\Server.csprojAssemblyReference.cache
+D:\Backup Work\Current Work\Skeleton\NLT - Manipulation\Server\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
+D:\Backup Work\Current Work\Skeleton\NLT - Manipulation\Server\Server\obj\Debug\Server.exe
+D:\Backup Work\Current Work\Skeleton\NLT - Manipulation\Server\Server\obj\Debug\Server.pdb
