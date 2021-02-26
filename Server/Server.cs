@@ -13,6 +13,8 @@ namespace Server
     class Server
     {
         public static Thread tcpThread, udpThread, newPortThread;
+        private static string default_Host = "127.0.0.1";
+        private static IPAddress def_Address = IPAddress.Parse(default_Host);
 
         static void Main(string[] args)
         {
@@ -29,6 +31,7 @@ namespace Server
             threadAliveCheck(newPortThread, "byte");
         }
 
+        //Check Threads are active
         private static void threadAliveCheck(Thread thr, string name)
         {
             if (thr.IsAlive)
@@ -46,40 +49,14 @@ namespace Server
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
         }
+        //Thread active end
 
-        private static void newPort()
-        {
-            Socket connection;
-            TcpListener listener;
 
-            IPAddress def_Address = IPAddress.Parse("127.0.0.1");
-
-            try
-            {
-                listener = new TcpListener(def_Address, 1550);
-                listener.Start();
-
-                while (true)
-                {
-                    connection = listener.AcceptSocket();
-
-                    Console.WriteLine("Port 1550 FOUND ");
-
-                    printListener(connection, listener);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("ERROR : Connection dropped ~~~~ \n" + e);
-            }
-        }
-
+        //TCP Listener and Print
         private static void TCPListener()
         {
             Socket connection;
             TcpListener listener;
-
-            IPAddress def_Address = IPAddress.Parse("127.0.0.1");
 
             try
             {
@@ -136,7 +113,9 @@ namespace Server
                 Console.WriteLine(e);
             }
         }
+        //TCP Listener and Print End
 
+        //UDP Listener
         private static void UDPListener()
         {
             try
@@ -167,6 +146,33 @@ namespace Server
 
                 Console.WriteLine("ERROR: connection dropped.");
                 Console.WriteLine(e);
+            }
+        }
+        //UDP Listener End
+
+        //Testing...
+        private static void newPort()
+        {
+            Socket connection;
+            TcpListener listener;
+
+            try
+            {
+                listener = new TcpListener(def_Address, 1550);
+                listener.Start();
+
+                while (true)
+                {
+                    connection = listener.AcceptSocket();
+
+                    Console.WriteLine("Port 1550 FOUND ");
+
+                    printListener(connection, listener);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("ERROR : Connection dropped ~~~~ \n" + e);
             }
         }
 
