@@ -10,16 +10,41 @@ using System.Threading;
 
 namespace Server
 {
-    class Program
+    class Server
     {
+        public static Thread tcpThread, udpThread, newPortThread;
+
         static void Main(string[] args)
         {
-            Thread tcpThread = new Thread(TCPListener);
+            tcpThread = new Thread(TCPListener);
             tcpThread.Start();
-            Thread newPortThread = new Thread(newPort);
-            newPortThread.Start();
+            threadAliveCheck(tcpThread, "tcp");
 
-            Console.WriteLine("TCP now listening");
+            udpThread = new Thread(UDPListener);
+            udpThread.Start();
+            threadAliveCheck(udpThread, "udp");
+
+            newPortThread = new Thread(newPort);
+            newPortThread.Start();
+            threadAliveCheck(newPortThread, "byte");
+        }
+
+        private static void threadAliveCheck(Thread thr, string name)
+        {
+            if (thr.IsAlive)
+            {
+                Console.Write(name.ToUpper() + " Listener ");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Active\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
+            else
+            {
+                Console.Write(name + " listener ");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("Inactive\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
         }
 
         private static void newPort()
@@ -108,6 +133,39 @@ namespace Server
             catch (Exception e)
             {
                 Console.WriteLine("ERROR: connection dropped."); //Error handling
+                Console.WriteLine(e);
+            }
+        }
+
+        private static void UDPListener()
+        {
+            try
+            {
+                UdpClient udpListener = new UdpClient(1550);
+                IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 1550);
+
+                try
+                {
+                    while (true)
+                    {
+                        byte[] reader = udpListener.Receive(ref endPoint);
+                        Console.Write("Message UDP : ");
+                        Console.WriteLine($" {Encoding.ASCII.GetString(reader, 0, reader.Length)}");
+                    }
+                }
+                catch (SocketException e)
+                {
+                    Console.WriteLine(e);
+                }
+                finally
+                {
+                    udpListener.Close();
+                }
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine("ERROR: connection dropped.");
                 Console.WriteLine(e);
             }
         }
