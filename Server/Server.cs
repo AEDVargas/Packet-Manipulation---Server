@@ -14,6 +14,8 @@ namespace Server
     {
         public static Thread tcpThread, udpThread, newPortThread;
         private static string default_Host = "127.0.0.1";
+        private static int default_Port = 1550;
+
         private static IPAddress def_Address = IPAddress.Parse(default_Host);
 
         static void Main(string[] args)
@@ -26,9 +28,9 @@ namespace Server
             udpThread.Start();
             threadAliveCheck(udpThread, "udp");
 
-            newPortThread = new Thread(newPort);
-            newPortThread.Start();
-            threadAliveCheck(newPortThread, "byte");
+            //newPortThread = new Thread(newPort);
+            //newPortThread.Start();
+            //threadAliveCheck(newPortThread, "byte");
         }
 
         //Check Threads are active
@@ -60,7 +62,7 @@ namespace Server
 
             try
             {
-                listener = new TcpListener(def_Address, 1500);
+                listener = new TcpListener(def_Address, default_Port);
                 listener.Start();
 
                 while (true)
@@ -74,7 +76,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                Console.WriteLine("ERROR : Connection dropped ~~~~ \n" + e);
+                Console.WriteLine("ERROR : TCP Connection dropped ~~~~ \n\n\n" + e);
             }
 
         }
@@ -109,7 +111,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                Console.WriteLine("ERROR: connection dropped."); //Error handling
+                Console.WriteLine("ERROR : TCP Connection dropped ~~~~ \n\n\n" + e);
                 Console.WriteLine(e);
             }
         }
@@ -120,8 +122,8 @@ namespace Server
         {
             try
             {
-                UdpClient udpListener = new UdpClient(1550);
-                IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 1550);
+                UdpClient udpListener = new UdpClient(default_Port);
+                IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, default_Port);
 
                 try
                 {
@@ -144,7 +146,7 @@ namespace Server
             catch (Exception e)
             {
 
-                Console.WriteLine("ERROR: connection dropped.");
+                Console.WriteLine("ERROR : UDP Connection dropped ~~~~ \n\n\n" + e);
                 Console.WriteLine(e);
             }
         }
@@ -158,21 +160,21 @@ namespace Server
 
             try
             {
-                listener = new TcpListener(def_Address, 1550);
+                listener = new TcpListener(def_Address, default_Port);
                 listener.Start();
 
                 while (true)
                 {
                     connection = listener.AcceptSocket();
 
-                    Console.WriteLine("Port 1550 FOUND ");
+                    Console.WriteLine("Port " + default_Port + " FOUND ");
 
                     printListener(connection, listener);
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine("ERROR : Connection dropped ~~~~ \n" + e);
+                Console.WriteLine("ERROR : New Port Connection dropped ~~~~ \n\n\n" + e);
             }
         }
 
